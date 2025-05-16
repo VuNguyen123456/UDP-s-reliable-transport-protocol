@@ -20,3 +20,34 @@ Key features of MTP include:
 The project includes two command-line tools: mtp_send for sending a file and mtp_recv for receiving it. Both tools communicate over UDP sockets but abstract away the complexity from the user by handling reliability internally via the MTP protocol.
 
 MTP demonstrates a deep understanding of network protocol design and provides hands-on experience with concepts such as sliding window protocols, checksums, timeout-based retransmission, and data framing — all crucial in building reliable systems over unreliable channels.
+
+how to run:
+
+1. Start the receiver:
+   python MTPReceiver.py <port> <output_file> <receiver_log>
+
+   Example:
+   python MTPReceiver.py 5000 output_file.txt receiver_log.txt
+
+2. Then run the sender:
+   python MTPSender.py <receiver_ip> <port> <window_size> <input_file> <sender_log>
+
+   Example:
+   python MTPSender.py localhost 5000 5 1MB.txt sender_log.txt
+
+You can check if the file transferred correctly:
+   python -c "import filecmp; print(filecmp.cmp('1MB.txt', 'output_file.txt'))"
+
+Required libraries:
+- socket (for UDP communication)
+- sys (for command-line arguments)
+- zlib (for CRC32 checksums)
+- threading (for timers and concurrency)
+- time (for timeouts)
+
+no extra libraries need to be installed
+
+Environment setup:
+- Make sure Python 3 installed
+- No extra setup is needed
+- Keep all the files (MTPSender.py, MTPReceiver.py, and unreliable_channel.py) in the same folder
